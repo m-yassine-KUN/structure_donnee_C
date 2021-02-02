@@ -1,61 +1,24 @@
 #include<stdio.h>
 #include<stdlib.h>
-#include<string.h>
+
 
 /******************************************/
-typedef struct ville {
-    char nom[50];
-    float superficie;
-    int nbr_habit;
-}ville;
-
-typedef struct liste_des_villes {
-    ville town; // data
-    ville *next;
-}liste_des_villes;
+typedef struct Box {
+    int data;
+    struct Box *next;
+}Box;
 
 /******************************************/
-liste_des_villes* Trier(liste_des_villes* debut){ // return une liste trier
-    liste_des_villes* temp, *p;
-    char b[30];
-    if(debut!=NULL){
-        for(temp=debut;temp->next!=NULL;temp=temp->next)
-            for(p=temp->next;p!=NULL;p=p->next){
-                if(strcmp(p->town.nom,temp->town.nom)<0){
-                    strcpy(b,p->town.nom);
-                    strcpy(p->town.nom,temp->town.nom);
-                    strcpy(temp->town.nom,b);
-                }
-            }
-        return debut;
-    }
-}
-/******************************************/
-void ajouter(liste_des_villes **l/*Box **debut*/,ville v/*int elm*/){
-    liste_des_villes *b;
-    b=(liste_des_villes *)malloc(sizeof(liste_des_villes));
-    b->next=*l;
-    b->town=v;
-    *l=b;
-    *l=Trier(*l);
+
+void ajouterAuDebut(Box **debut,int elm){
+    Box *b;
+    b=(Box *)malloc(sizeof(Box));
+    b->next=*debut;
+    b->data=elm;
+    *debut=b;
 }
 
 /******************************************/
-
-void afficherListe(liste_des_villes *debut){
-    liste_des_villes *temp;
-    if(debut==NULL)
-        printf("la Liste est vide\n");
-    else{
-        temp=debut;
-        while(temp!=NULL){
-            printf("[nom de la ville :%s] -- [nbr d'habittent de la ville :%d] -- [la superficie de la ville :%d] \n",temp->town.nom,temp->town.nbr_habit,temp->town.superficie);
-            temp=temp->next;
-        }
-    }
-}
-/******************************************/
-
 void ajouterALaFin(Box **debut,int elm){
     Box *b,*temp;
     b=(Box *)malloc(sizeof(Box));
@@ -161,18 +124,15 @@ void afficherListe(Box *debut){
 /******************************************/
 
 int main(){
-    liste_des_villes *L1=NULL;
-    int nbr,ajM_n;
-    char n[50];
+    Box *L1=NULL;
+    int n, nbr,ajM_n;
     printf("entrer le nombre des elements de la liste chainee: ");
     scanf("%d",&nbr);
     
     for(int i=0;i<nbr;i++){
-        printf("entrer une ville: ");
-        fflush(stdin);
-        gets(n);
-        ajouter(&L1,n);
-        
+        printf("entrer un element: ");
+        scanf("%d",&n);
+        ajouterALaFin(&L1,n);
     }
     
     afficherListe(L1);
@@ -194,5 +154,6 @@ int main(){
 
     suprimerAuMilieu(&L1,3);
     afficherListe(L1);
-    return 0;
+    fflush(stdin);
+    getchar();
 }
